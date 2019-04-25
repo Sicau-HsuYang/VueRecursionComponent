@@ -1,5 +1,15 @@
 module.exports = {
   presets: [
-    '@vue/app'
-  ]
-}
+    [
+      '@vue/app',
+      {
+        useBuiltIns: 'entry',
+      },
+    ],
+  ],
+  env: {
+    development: {
+      plugins: ['dynamic-import-node'],
+    },
+  },
+};

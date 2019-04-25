@@ -22,47 +22,53 @@
   </div>
 </template>
 
-<script>
-import BaseMixin from "@/mixins/BaseMixin.js";
-import LayoutMixin from "@/mixins/LayoutMixin.js";
-export default {
-  name: "BaseLayout",
-  mixins: [BaseMixin, LayoutMixin],
-  props: {
-    layout: {
-      type: [Object],
-      required: true
-    }
-  },
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseComponent from '@/components/Base/BaseComponent';
+@Component({
+  name: 'BaseLayout',
   components: {
-    HelloWorld: () => import("@/components/HelloWorld.vue"),
-    Girl: () => import("@/components/Girl.vue"),
-    Boy: () => import("@/components/Boy.vue"),
-    Conan: () => import("@/components/Conan.vue")
+    HelloWorld: () => import('@/components/HelloWorld.vue'),
+    Girl: () => import('@/components/Girl.vue'),
+    Boy: () => import('@/components/Boy.vue'),
+    Conan: () => import('@/components/Conan.vue'),
   },
-  methods: {
-    handleLoaded(res) {
-      if (this.layout.component) {
-        this.$emit("loaded", {
-          type: this.layout.component.name,
-          data: null
+})
+export default class BaseLayout extends BaseComponent {
+  namedChildren: any[] = [];
+
+  created() {
+    if (Array.isArray(this.layout.children)) {
+      this.layout!.children.forEach((child: any) => {
+        this.namedChildren.push({
+          name: child.name ? child.name : child.component.name,
+          loaded: false,
         });
-      } else {
-        this.namedChildren.forEach(child => {
-          if (child.name == res.type) {
-            child.loaded = true;
-          }
-        });
-        if (this.namedChildren.every(x => x.loaded)) {
-          this.$emit("loaded", {
-            type: this.layout.name,
-            data: null
-          });
+      });
+    }
+  }
+
+  handleLoaded(res: any) {
+    if (this.layout.component) {
+      this.$emit('loaded', {
+        type: this.layout.component.name,
+        data: null,
+      });
+    } else {
+      this.namedChildren.forEach((child: any) => {
+        if (child.name == res.type) {
+          child.loaded = true;
         }
+      });
+      if (this.namedChildren.every((x: any) => x.loaded)) {
+        this.$emit('loaded', {
+          type: this.layout.name,
+          data: null,
+        });
       }
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .component {

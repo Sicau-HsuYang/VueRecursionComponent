@@ -9,20 +9,14 @@
   </div>
 </template>
 
-<script>
-import BaseComponent from "@/components/Base/BaseComponent.js";
-import BaseMixin from "@/mixins/BaseMixin";
-export default {
-  name: "Boy",
-  mixins: [BaseMixin],
-  extends: BaseComponent,
-  mounted() {
-    this.$emit("loaded", {
-      type: this.name,
-      data: null
-    });
-    console.log("Component: Boy loaded");
-  }
-};
+<script lang="ts">
+import BaseComponent from '@/components/Base/BaseComponent';
+import { Component } from 'vue-property-decorator';
+@Component({
+  name: 'Boy',
+})
+export default class Boy extends BaseComponent {
+  msg: string = 'Hello Beautiful Girl!';
+}
 </script>
 

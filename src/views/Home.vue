@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    {{hello}}
     <base-layout
       v-for="(layout, idx) in layouts"
       :level="1"
@@ -11,69 +12,71 @@
   </div>
 </template>
 
-<script>
-import BaseLayout from "@/components/BaseLayout";
-export default {
-  name: "home",
+<script lang="ts">
+import { Component, Mixins, Vue } from 'vue-property-decorator';
+import LayoutMixin from '@/mixins/LayoutMixin';
+@Component({
+  name: 'Home',
   components: {
-    BaseLayout: BaseLayout
+    BaseLayout: () => import('@/components/BaseLayout.vue'),
   },
-  data() {
-    return {
-      layouts: [
-        {
-          name: "First",
-          children: [
-            {
-              component: {
-                name: "Boy"
-              }
+})
+export default class Home extends Mixins(LayoutMixin) {
+  get layouts() {
+    return [
+      {
+        name: 'First',
+        children: [
+          {
+            component: {
+              name: 'Boy',
             },
-            {
-              name: "Second",
-              children: [
-                {
-                  component: {
-                    name: "HelloWorld"
-                  }
+          },
+          {
+            name: 'Second',
+            children: [
+              {
+                component: {
+                  name: 'HelloWorld',
                 },
-                {
-                  component: {
-                    name: "Girl"
-                  }
-                }
-              ]
-            }
-          ]
+              },
+              {
+                component: {
+                  name: 'Girl',
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        component: {
+          name: 'Conan',
         },
-        {
-          component: {
-            name: "Conan"
-          }
-        }
-      ],
-      namedChildren: []
-    };
-  },
+      },
+    ];
+  }
+
+  namedChildren: any[] = [];
+
   created() {
-    this.layouts.forEach(child => {
+    this.layouts.forEach((child: any) => {
       this.namedChildren.push({
         name: child.name ? child.name : child.component.name,
-        loaded: false
+        loaded: false,
       });
     });
-  },
-  methods: {
-    handleLoaded(res) {
-      this.namedChildren.forEach(child => {
-        if (child.name == res.type) {
-          child.loaded = true;
-        }
-      });
-      if (this.namedChildren.every(x => x.loaded)) {
-        console.log("final");
+  }
+
+  handleLoaded(res: any) {
+    this.namedChildren.forEach((child: any) => {
+      if (child.name == res.type) {
+        child.loaded = true;
       }
+    });
+    if (this.namedChildren.every((x: any) => x.loaded)) {
+      console.log('final');
     }
   }
-};
+}
 </script>

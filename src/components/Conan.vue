@@ -5,18 +5,12 @@
   </div>
 </template>
 
-<script>
-import BaseComponent from "@/mixins/BaseMixin.js";
-export default {
-  name: "Conan",
-  mixins: [BaseComponent],
-  mounted() {
-    console.log("Component: Conan loaded");
-    this.$emit("loaded", {
-      type: this.name,
-      data: null
-    });
-  }
-};
+<script lang="ts">
+import BaseComponent from '@/components/Base/BaseComponent';
+import { Component } from 'vue-property-decorator';
+@Component({
+  name: 'Conan',
+})
+export default class Conan extends BaseComponent {}
 </script>
 
