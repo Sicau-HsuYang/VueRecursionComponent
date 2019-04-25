@@ -17,6 +17,10 @@ import { Component } from 'vue-property-decorator';
 })
 export default class Boy extends BaseComponent {
   msg: string = 'Hello Beautiful Girl!';
+
+  mounted() {
+    this.$http.getAll();
+  }
 }
 </script>
 

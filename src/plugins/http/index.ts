@@ -1,5 +1,12 @@
-import BasePlugin from '../index';
-import Plugin from '../plugin';
-class Http extends Plugin {}
+import Plugin from '../install/plugin';
+export default class Http extends Plugin {
+  name = 'http';
 
-export default new BasePlugin(Http);
+  constructor() {
+    super();
+  }
+
+  getAll() {
+    console.log('hello world');
+  }
+}
